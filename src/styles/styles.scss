@@ -1,0 +1,25 @@
+@import './base/settings';
+@import './base/base';
+@import './components/buttons';
+@import './components/header';
+@import './components/scoreboard';
+@import './components/useraction';
+
+#topPanel {
+    display: flex;
+    justify-content: space-around;
+}
+
+//playground
+.goo {
+    color: red;
+}
+.anim-appear {
+    opacity: 0.01;
+    color: red;
+  }
+   
+  .anim-appear.anim-appear-active{
+    opacity: 2;
+    transition: opacity 5s ease-in;
+  }

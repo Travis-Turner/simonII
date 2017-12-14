@@ -1,0 +1,70 @@
+$button-width: 49%;
+$button-height: 200px;
+$radius-size: 100%;
+$red-button-color: rgb(151, 0, 0);
+$blue-button-color: rgb(1, 1, 145);
+$yellow-button-color: rgb(189, 189, 0);
+$green-button-color: rgb(0, 94, 0);
+$button-hover-light: 15%;
+
+//Action button styles
+#buttonContainer {
+    width: 40%;
+    display: flex;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: space-between;
+    margin-top: 2%;
+}
+.actionButtons {
+    height: $button-height;
+    width: $button-width;
+    margin-bottom: 2%;
+    box-sizing: border-box;
+}
+// Red button styles
+#redButton {
+    border: none;
+    background-color: $red-button-color;
+    border-top-left-radius: $radius-size;
+    border-top: 30px solid lighten($red-button-color, 5%);
+}
+#redButton:hover {
+    background-color: lighten($red-button-color, $button-hover-light);
+}
+// Blue button styles
+#blueButton {
+    border: none;
+    background-color:$blue-button-color;
+    border-top-right-radius: $radius-size;
+    border-top: 30px solid lighten($blue-button-color, 5%);
+}
+#blueButton:hover {
+    background-color: lighten($blue-button-color, $button-hover-light);
+}
+// Yellow button styles
+#yellowButton {
+    border: none;
+    background-color: $yellow-button-color;
+    border-bottom-left-radius: $radius-size;
+    border-bottom: 30px solid lighten($yellow-button-color, 5%);
+}
+#yellowButton:hover {
+    background-color: lighten($yellow-button-color, $button-hover-light);
+}
+// Green button styles
+#greenButton {
+    border: none;
+    background-color: $green-button-color;
+    border-bottom-right-radius: $radius-size;
+    border-bottom: 30px solid lighten($green-button-color, 5%);
+}
+#greenButton:hover {
+    background-color: lighten($green-button-color, $button-hover-light);
+}
+
+.animatedButton {
+    background-color: rgb(217, 15, 224) !important;
+}
+
