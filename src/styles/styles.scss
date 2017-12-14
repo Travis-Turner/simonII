@@ -9,17 +9,3 @@
     display: flex;
     justify-content: space-around;
 }
-
-//playground
-.goo {
-    color: red;
-}
-.anim-appear {
-    opacity: 0.01;
-    color: red;
-  }
-   
-  .anim-appear.anim-appear-active{
-    opacity: 2;
-    transition: opacity 5s ease-in;
-  }
