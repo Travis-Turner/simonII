@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Scoreboard = (props) => (
-    <div>
+    <div id="scoreBoardContainer">
         <p>SCORE: {props.score}</p>
-        {props.hiScore && <p>HI SCORE: {props.hiScore}</p>}
+        {props.hiScore && !props.inProgress && <p>HI SCORE: {props.hiScore}</p>}
     </div>
 );
 
