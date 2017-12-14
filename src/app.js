@@ -1,11 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactHowler from 'react-howler';
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import Header from './components/Header';
 import UserAction from './components/UserAction';
 import Scoreboard from './components/Scoreboard';
 import Buttons from './components/Buttons';
+import { Howl } from 'howler';
+
+const redTone = new Howl({
+    src: '/sounds/redtone.mp3'
+});
+const blueTone = new Howl({
+    src: '/sounds/bluetone.mp3'
+});
+const greenTone = new Howl({
+    src: '/sounds/greentone.mp3'
+});
+const yellowTone = new Howl({
+    src: '/sounds/yellowtone.mp3'
+});
 
 class SimonApp extends React.Component {
     state = {
@@ -23,6 +38,7 @@ class SimonApp extends React.Component {
         activeGreen: false, 
         sessionPlays: 0
     }
+    
     generateSequence = () => {
         const randNum = Math.floor(Math.random() * 4);   
         this.setState((prevState) => ({
@@ -57,7 +73,7 @@ class SimonApp extends React.Component {
                     inProgress: !prevState.inProgress
                 }
             })
-        },400); 
+        },100); 
     }; 
     beginAnimation = () => {
         const animationInterval = setInterval(() => {
@@ -67,19 +83,23 @@ class SimonApp extends React.Component {
     toggleColor = (color, interval) => {
         switch (color) {
             case 0:
-                return this.setState((prevState) => ({activeRed: true, animationPlaying: true, position: prevState.position + 1}), () => {setTimeout(() => {
+                redTone.play();
+                return this.setState((prevState) => ({activeRed: true, animationPlaying: true, position: prevState.position + 1}), () => {setTimeout(() => {                    
                     return this.setState((prevState) => ({activeRed: false}));
                 }, 700)});
             case 1:
-                return this.setState((prevState) => ({activeBlue: true, animationPlaying: true, position: prevState.position + 1}), () => {setTimeout(() => {
+                blueTone.play();
+                return this.setState((prevState) => ({activeBlue: true, animationPlaying: true, position: prevState.position + 1}), () => {setTimeout(() => {                    
                     return this.setState((prevState) => ({activeBlue: false}));
                 }, 700)});
             case 2:
-                return this.setState((prevState) => ({activeYellow: true, animationPlaying: true, position: prevState.position + 1}), () => {setTimeout(() => {
+                yellowTone.play();
+                return this.setState((prevState) => ({activeYellow: true, animationPlaying: true, position: prevState.position + 1}), () => {setTimeout(() => {                   
                     return this.setState((prevState) => ({activeYellow: false}));
                 }, 700)});
             case 3:
-                return this.setState((prevState) => ({activeGreen: true, animationPlaying: true, position: prevState.position + 1}), () => {setTimeout(() => {
+                greenTone.play();
+                return this.setState((prevState) => ({activeGreen: true, animationPlaying: true, position: prevState.position + 1}), () => {setTimeout(() => {                   
                     return this.setState((prevState) => ({activeGreen: false}));
                 }, 700)});
             default: 
@@ -130,6 +150,12 @@ class SimonApp extends React.Component {
     render () {
         return (
             <div>
+                <ReactHowler
+                    src='./sounds/simon2.mp3'
+                    playing={this.state.sessionPlays === 0}
+                    preload={true}
+                />
+                
                 <Header />
                 <div id="topPanel">
                     <UserAction  startGame={this.startGame} inProgress={this.state.inProgress}/>

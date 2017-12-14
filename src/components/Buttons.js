@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactHowler from 'react-howler';
 class Buttons extends React.Component {
     constructor (props){
         super(props);
@@ -9,8 +10,7 @@ class Buttons extends React.Component {
             <div 
                 id="buttonContainer"
                 className={this.props.sessionPlays === 0 && 'inactiveButtons'}
-            > 
-                
+            >               
                     <button disabled={!this.props.inProgress || this.props.animationPlaying} 
                         id="redButton" 
                         onClick={this.props.handleTouch}
