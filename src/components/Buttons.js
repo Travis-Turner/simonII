@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactHowler from 'react-howler';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 class Buttons extends React.Component {
     constructor (props){
         super(props);
@@ -9,10 +11,8 @@ class Buttons extends React.Component {
         return (                     
             <div id="buttonContainer">   
                
-                    <div id="scoreDisplay">
-                        <span id="counter">
-                            {!this.props.animationPlaying ? this.props.score : this.props.face}
-                        </span>
+                    <div id="scoreDisplay">                     
+                            {!this.props.animationPlaying ? <span className="counter">{this.props.score}</span> : <span className="counter">{this.props.face}</span>}                                              
                     </div>       
                                   
                     <button disabled={!this.props.inProgress || this.props.animationPlaying} 

@@ -1,16 +1,16 @@
 import { Howl } from 'howler';
 
 const redTone = new Howl({
-    src: '/sounds/redtone.mp3'
+    src: '/sounds/red-tone.mp3'
 });
 const blueTone = new Howl({
-    src: '/sounds/bluetone.mp3'
+    src: '/sounds/blue-tone.mp3'
 });
 const greenTone = new Howl({
-    src: '/sounds/greentone.mp3'
+    src: '/sounds/green-tone.mp3'
 });
 const yellowTone = new Howl({
-    src: '/sounds/yellowtone.mp3'
+    src: '/sounds/yellow-tone.mp3'
 });
 const bgTrack = new Howl({
     src: '/sounds/bg-dance.mp3',
@@ -35,6 +35,9 @@ const optionSfx = new Howl({
 const startSfx = new Howl({
     src: '/sounds/select-start.mp3'
 });
+const victorySfx = new Howl({
+    src: '/sounds/victory.mp3'
+});
 
 
 
@@ -42,4 +45,4 @@ const startSfx = new Howl({
 export 
     {redTone, blueTone, greenTone, yellowTone, 
     bgTrack, bgUltraTrack, loseSfx, launchSfx, 
-    success, optionSfx, startSfx};
+    success, optionSfx, startSfx, victorySfx};

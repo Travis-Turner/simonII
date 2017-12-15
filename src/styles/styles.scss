@@ -4,5 +4,9 @@
 @import './components/header';
 @import './components/scoreboard';
 @import './components/useraction';
+@import './components/_react-animations.scss';
 
-
+#victoryMessage {
+    text-align: center;
+    margin-bottom: 50px;
+}

@@ -3,12 +3,15 @@ import Header from '../components/Header';
 import UserAction from '../components/UserAction';
 import Scoreboard from '../components/Scoreboard';
 import Buttons from '../components/Buttons';
+import Victory from '../components/Victory';
 import { Howl } from 'howler';
 import ReactHowler from 'react-howler';
 import SimonApp from '../components/SimonApp';
 import {redTone, blueTone, greenTone, yellowTone, bgTrack, success, bgUltraTrack, 
-        loseSfx, launchSfx, optionSfx, startSfx} from '../sounds/sounds';
+        loseSfx, launchSfx, optionSfx, startSfx, victorySfx} from '../sounds/sounds';
 import { setTimeout } from 'core-js/library/web/timers';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { loadavg } from 'os';
 
 class Dashboard extends React.Component {
     state = {
@@ -18,7 +21,7 @@ class Dashboard extends React.Component {
         move: 0,
         score: 1,
         hiScore: 1,
-        ultraHiScore: 0,
+        ultraHiScore: 1,
         animationPlaying: false,
         position: 0, 
         activeRed: false,
@@ -29,14 +32,33 @@ class Dashboard extends React.Component {
         difficulty: 250,
         infinite: true,
         retries: true, 
-        face: '^_^'
+        face: '^_^',
+        victory: false
     }   
+    componentWillMount () {
+       
+            let scoreObj = JSON.parse(localStorage.getItem('scores')) || {
+                hiScore: 1,
+                ultraHiScore: 1
+            };
+        
+        this.setState(() => ({
+            hiScore: scoreObj.hiScore || 1,
+            ultraHiScore: scoreObj.ultraHiScore || 1
+        }))
+    }
     componentDidMount () {
         launchSfx.play();
+        victorySfx.play();
     }
     componentDidUpdate () {
+        let storageObj = {
+            hiScore: this.state.hiScore,
+            ultraHiScore: this.state.ultraHiScore
+        }
+        localStorage.setItem('scores', JSON.stringify(storageObj));
         if (!this.state.infinite){
-            if (this.state.score > 19){
+            if (this.state.score > 19 && !this.state.victory && !this.state.infinite){
                 return this.gameOver();
             }
         }
@@ -50,6 +72,8 @@ class Dashboard extends React.Component {
             score: prevState.sequence.length >= 1 ? prevState.score + 1 : prevState.score,
             face: '^_^'
         }), () => {
+            //store score to localStorage
+            
             this.beginAnimation();
         }); 
     }
@@ -154,12 +178,16 @@ class Dashboard extends React.Component {
         setTimeout(() => {
             this.state.difficulty === 500 ? bgTrack.play() : bgUltraTrack.play();              
             this.setState(() => ({
-                inProgress: true
+                inProgress: true,
+                victory: false
             }));
         },400); 
     }; 
     //Animation functions
     beginAnimation = () => {
+        if (this.state.victory){
+            return;
+        }
         const animationInterval = setInterval(() => {
             this.toggleColor(this.state.sequence[this.state.position], animationInterval);
         }, this.state.difficulty);
@@ -201,7 +229,14 @@ class Dashboard extends React.Component {
         }
     }
     gameOver = () => {
-        loseSfx.play();
+        if (this.state.score > 19 && !this.state.infinite){
+            victorySfx.play();
+            this.setState(() => ({
+                victory: true
+            }));
+        } else {
+            loseSfx.play();
+        }  
         setTimeout(() => {
             bgTrack.stop();
             bgUltraTrack.stop();
@@ -246,8 +281,18 @@ class Dashboard extends React.Component {
     } 
     render () {
         return (
-            <div>               
-                <Header inProgress={this.state.inProgress} resetGame={this.resetGame}/>
+            <div> 
+                {this.state.victory && <Victory />}     
+                <ReactCSSTransitionGroup
+                transitionName="header"
+                transitionAppear={true}
+                transitionAppearTimeout={2000}
+                transitionEnter={false}
+                transitionLeave={false}
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={300}>         
+                    {!this.state.victory && <Header inProgress={this.state.inProgress} resetGame={this.resetGame}/>}
+                </ReactCSSTransitionGroup>
                 {!this.state.inProgress &&
                     <UserAction  
                         startGame={this.startGame} 
@@ -264,8 +309,8 @@ class Dashboard extends React.Component {
                     />
                 }                      
                 {this.state.inProgress && 
-                    <div>
-                        <Scoreboard hiScore={this.state.hiScore} inProgress={this.state.inProgress}/>                    
+                    <div>                         
+                        <Scoreboard hiScore={this.state.hiScore} inProgress={this.state.inProgress}/>                                          
                         <SimonApp 
                             inProgress={this.state.inProgress}          
                             sequence={this.state.sequence}
@@ -280,7 +325,7 @@ class Dashboard extends React.Component {
                             generateSequenceAndAnimate={this.generateSequenceAndAnimate}
                             score={this.state.score}
                             face={this.state.face}
-                        />
+                        />                      
                     </div>
                 }               
             </div>

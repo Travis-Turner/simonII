@@ -1,0 +1,18 @@
+.header-appear {
+opacity: 0.01;
+}
+
+.header-appear.header-appear-active {
+opacity: 1;
+transition: opacity 2s linear;
+}
+
+.counterFx-appear {
+    transform: scale(2)
+}
+    
+.counterFx-appear.counterFx-appear-active {
+    transition: scale(1) 0.5s linear;
+}
+    
+
