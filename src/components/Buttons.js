@@ -7,7 +7,14 @@ class Buttons extends React.Component {
     }
     render () {
         return (                     
-            <div id="buttonContainer">               
+            <div id="buttonContainer">   
+               
+                    <div id="scoreDisplay">
+                        <span id="counter">
+                            {!this.props.animationPlaying ? this.props.score : this.props.face}
+                        </span>
+                    </div>       
+                                  
                     <button disabled={!this.props.inProgress || this.props.animationPlaying} 
                         id="redButton" 
                         onClick={this.props.handleTouch}

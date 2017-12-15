@@ -6,7 +6,8 @@ import Buttons from '../components/Buttons';
 import { Howl } from 'howler';
 import ReactHowler from 'react-howler';
 import SimonApp from '../components/SimonApp';
-import {redTone, blueTone, greenTone, yellowTone, bgTrack, bgUltraTrack, loseSfx, launchSfx} from '../sounds/sounds';
+import {redTone, blueTone, greenTone, yellowTone, bgTrack, success, bgUltraTrack, 
+        loseSfx, launchSfx, optionSfx, startSfx} from '../sounds/sounds';
 import { setTimeout } from 'core-js/library/web/timers';
 
 class Dashboard extends React.Component {
@@ -15,8 +16,8 @@ class Dashboard extends React.Component {
         sequence: [],
         localSequence: [],
         move: 0,
-        score: 0,
-        hiScore: 0,
+        score: 1,
+        hiScore: 1,
         ultraHiScore: 0,
         animationPlaying: false,
         position: 0, 
@@ -24,12 +25,21 @@ class Dashboard extends React.Component {
         activeBlue: false,
         activeYellow: false,
         activeGreen: false, 
-        speed: 300,
-        difficulty: 500,
-        strict: true
+        speed: 100,
+        difficulty: 250,
+        infinite: true,
+        retries: true, 
+        face: '^_^'
     }   
     componentDidMount () {
-        // launchSfx.play();
+        launchSfx.play();
+    }
+    componentDidUpdate () {
+        if (!this.state.infinite){
+            if (this.state.score > 19){
+                return this.gameOver();
+            }
+        }
     }
     generateSequenceAndAnimate = () => {
         const randNum = Math.floor(Math.random() * 4);   
@@ -37,14 +47,16 @@ class Dashboard extends React.Component {
             sequence: [...prevState.sequence, randNum],
             localSequence: [],
             move: prevState.move + 1,
-            score: this.state.move >= 1 ? prevState.score + 1: 0
+            score: prevState.sequence.length >= 1 ? prevState.score + 1 : prevState.score,
+            face: '^_^'
         }), () => {
             this.beginAnimation();
         }); 
     }
     failAttemptAnimation = () => {
         this.setState(() => ({
-            localSequence: []
+            localSequence: [],
+            face: '^_^'
         }), () => {
             this.beginAnimation();
         })
@@ -65,9 +77,11 @@ class Dashboard extends React.Component {
         const masterCompare = this.state.sequence.slice(0, move);
             if (local.toString() === masterCompare.toString()){
                 if (local.length === master.length){
+                    success.play();
                     this.setState(() => ({
                         move: 0,
-                        animationPlaying: true
+                        animationPlaying: true,
+                        face: '^O^'
                     }), () => {
                         setTimeout(() => {
                             this.generateSequenceAndAnimate();
@@ -75,9 +89,10 @@ class Dashboard extends React.Component {
                         
                     })        
                 }
-            } else if (this.state.strict) {
+            } else if (this.state.retries) {
                 this.setState(() => ({
-                    move: 0
+                    move: 0,
+                    face: 'O_O'
                 }), () => {
                     loseSfx.play();
                     this.setState(() => ({
@@ -93,6 +108,7 @@ class Dashboard extends React.Component {
             }        
     }
     selectSpeed = (e) => {
+        optionSfx.play();
         if (e.target.name === 'normal'){
             this.setState(() => ({
                 difficulty: 500,
@@ -105,9 +121,38 @@ class Dashboard extends React.Component {
             }))
         }
     }
+    selectRounds = (e) => {
+        optionSfx.play();
+        if (e.target.name === 'limitedRounds'){
+            this.setState(() => ({
+                infinite: false
+            }));
+        } else {
+            this.setState(() => ({
+                infinite: true
+            }))
+        }
+    }
+    selectStrict = (e) => {
+        optionSfx.play();
+        if (e.target.name === 'strictTrue') {
+            this.setState(({
+                retries: true
+            }));
+        } else {
+            this.setState(() => ({
+                retries: false
+            }))
+        }
+    }
+    resetGame = () => {
+        this.gameOver();
+    }
     startGame = () => {
+        startSfx.play();
+        optionSfx.play();
         setTimeout(() => {
-            // this.state.difficulty === 500 ? bgTrack.play() : bgUltraTrack.play();              
+            this.state.difficulty === 500 ? bgTrack.play() : bgUltraTrack.play();              
             this.setState(() => ({
                 inProgress: true
             }));
@@ -202,7 +247,7 @@ class Dashboard extends React.Component {
     render () {
         return (
             <div>               
-                <Header />
+                <Header inProgress={this.state.inProgress} resetGame={this.resetGame}/>
                 {!this.state.inProgress &&
                     <UserAction  
                         startGame={this.startGame} 
@@ -211,11 +256,16 @@ class Dashboard extends React.Component {
                         hiScore={this.state.hiScore}
                         ultraHiScore={this.state.ultraHiScore}
                         selectSpeed={this.selectSpeed}
+                        speed={this.state.speed}
+                        selectRounds={this.selectRounds}
+                        infinite={this.state.infinite}
+                        retries={this.state.retries}
+                        selectStrict={this.selectStrict}
                     />
                 }                      
                 {this.state.inProgress && 
                     <div>
-                        <Scoreboard score={this.state.score} hiScore={this.state.hiScore} inProgress={this.state.inProgress}/>                    
+                        <Scoreboard hiScore={this.state.hiScore} inProgress={this.state.inProgress}/>                    
                         <SimonApp 
                             inProgress={this.state.inProgress}          
                             sequence={this.state.sequence}
@@ -228,6 +278,8 @@ class Dashboard extends React.Component {
                             activeGreen={this.state.activeGreen}
                             beginAnimation={this.beginAnimation}
                             generateSequenceAndAnimate={this.generateSequenceAndAnimate}
+                            score={this.state.score}
+                            face={this.state.face}
                         />
                     </div>
                 }               

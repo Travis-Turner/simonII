@@ -1,8 +1,14 @@
 import React from 'react';
 
-const Header = () => (
+const Header = (props) => (
     <div>
-        <h1>SIMON II</h1>
+        {props.inProgress ? 
+            <div>
+                <h3>SIMON II</h3>
+                <button onClick={props.resetGame} id="menuButton">QUIT</button> 
+            </div>  :
+            <h1>SIMON II</h1>
+        }     
     </div>
 );
 

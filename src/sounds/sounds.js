@@ -13,11 +13,11 @@ const yellowTone = new Howl({
     src: '/sounds/yellowtone.mp3'
 });
 const bgTrack = new Howl({
-    src: '/sounds/bg-track.mp3',
+    src: '/sounds/bg-dance.mp3',
     loop: true
 });
 const bgUltraTrack = new Howl({
-    src: '/sounds/bg-track-ultra.mp3',
+    src: '/sounds/bg-dance-fast.mp3',
     loop: true
 });
 const loseSfx = new Howl({
@@ -26,5 +26,20 @@ const loseSfx = new Howl({
 const launchSfx = new Howl({
     src: '/sounds/simon2.mp3'
 });
+const success = new Howl({
+    src: '/sounds/success.mp3'
+});
+const optionSfx = new Howl({
+    src: '/sounds/select-option.mp3'
+});
+const startSfx = new Howl({
+    src: '/sounds/select-start.mp3'
+});
 
-export {redTone, blueTone, greenTone, yellowTone, bgTrack, bgUltraTrack, loseSfx, launchSfx};
+
+
+
+export 
+    {redTone, blueTone, greenTone, yellowTone, 
+    bgTrack, bgUltraTrack, loseSfx, launchSfx, 
+    success, optionSfx, startSfx};

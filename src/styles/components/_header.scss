@@ -4,3 +4,27 @@ h1 {
     font-size: 8rem;
     font-family: 'Audiowide', cursive;
 }
+h3 {
+    text-align: center;
+    color: white;
+    font-size: 4rem;
+    font-family: 'Audiowide', cursive;
+}
+
+#menuButton {
+    border: 1px solid white;
+    background-color: black;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: $s-size;
+    width: 70px;
+    margin: 0 auto;
+    display: block;
+    margin-top: -20px;
+    margin-bottom: 50px;
+}
+#menuButton:hover {
+    background-color: white;
+    color: black;
+}

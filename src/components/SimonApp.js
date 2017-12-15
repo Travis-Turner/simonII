@@ -21,8 +21,10 @@ class SimonApp extends React.Component {
                 activeBlue={this.props.activeBlue}
                 activeYellow={this.props.activeYellow}
                 activeGreen={this.props.activeGreen}
-                simulateMove={this.props.simulateMove}          
+                score={this.props.score}
+                face={this.props.face}
             />
+            
         </div>
         )
     }
