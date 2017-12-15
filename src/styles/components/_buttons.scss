@@ -73,21 +73,33 @@ $button-hover-light: 15%;
     background-color: lighten($green-button-color, $button-hover-light);
 }
 //button animations
-.animatedRedButton, #redButton:active {
+.animatedRedButton {
     background-color: rgb(252, 157, 174) !important;
     animation: fade-colors 1s;
 }
-.animatedGreenButton, #greenButton:active {
+#redButton:active {
+    background-color: rgb(167, 105, 116) !important;
+}
+.animatedGreenButton {
     background-color: rgb(123, 248, 123) !important;
     animation: fade-colors 1s;
 }
-.animatedYellowButton, #yellowButton:active {
+#greenButton:active {
+    background-color: rgb(83, 165, 83) !important;
+}
+.animatedYellowButton {
     background-color: rgb(248, 248, 157) !important;
     animation: fade-colors 1s;
 }
-.animatedBlueButton, #blueButton:active {
+#yellowButton:active {
+    background-color: rgb(156, 156, 102) !important;
+}
+.animatedBlueButton  {
     background-color: rgb(0, 158, 206) !important;
     animation: fade-colors 1s;
+}
+#blueButton:active {
+    background-color: rgb(1, 107, 136) !important;
 }
 
 

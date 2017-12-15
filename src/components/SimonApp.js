@@ -3,9 +3,7 @@ import Buttons from '../components/Buttons';
 
 const SimonApp = (props) => {
     return (
-        <div
-        className={!props.inProgress && props.sessionPlays > 0 && 'gameOver'}
-        >
+        <div>
         <Buttons 
             inProgress={props.inProgress} 
             sequence={props.sequence}
@@ -16,8 +14,7 @@ const SimonApp = (props) => {
             activeBlue={props.activeBlue}
             activeYellow={props.activeYellow}
             activeGreen={props.activeGreen}
-            simulateMove={props.simulateMove}
-            sessionPlays={props.sessionPlays}
+            simulateMove={props.simulateMove}          
         />
     </div>
     )

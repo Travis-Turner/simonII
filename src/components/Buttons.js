@@ -7,10 +7,7 @@ class Buttons extends React.Component {
     }
     render () {
         return (                     
-            <div 
-                id="buttonContainer"
-                className={this.props.sessionPlays === 0 && 'inactiveButtons'}
-            >               
+            <div id="buttonContainer">               
                     <button disabled={!this.props.inProgress || this.props.animationPlaying} 
                         id="redButton" 
                         onClick={this.props.handleTouch}

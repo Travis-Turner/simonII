@@ -19,10 +19,19 @@ const greenTone = new Howl({
 const yellowTone = new Howl({
     src: '/sounds/yellowtone.mp3'
 });
-
 const bgTrack = new Howl({
     src: '/sounds/bg-track.mp3',
     loop: true
+});
+const bgUltraTrack = new Howl({
+    src: '/sounds/bg-track-ultra.mp3',
+    loop: true
+});
+const loseSfx = new Howl({
+    src: '/sounds/lose-sfx.mp3'
+});
+const launchSfx = new Howl({
+    src: '/sounds/simon2.mp3'
 });
 
 
@@ -41,11 +50,10 @@ class Dashboard extends React.Component {
         activeBlue: false,
         activeYellow: false,
         activeGreen: false, 
-        sessionPlays: 0,
         speed: 300,
-        difficulty: 500
-    }
-    
+        difficulty: 500,
+        strict: false
+    }   
     generateSequence = () => {
         const randNum = Math.floor(Math.random() * 4);   
         this.setState((prevState) => ({
@@ -55,25 +63,38 @@ class Dashboard extends React.Component {
             score: this.state.move >= 1 ? prevState.score + 1: 0
         })); 
     }
-    componentDidUpdate () {
+    componentDidMount () {
+        launchSfx.play();
+    }
+    componentDidUpdate () {    
         this.checkSequences();
         if (this.checkLength()){
             return this.generateSequence();
         }
+    }   
+    toggleProgress = () => {
+        this.setState((prevState) => {
+            return {
+                inProgress: !prevState.inProgress
+            }
+        })
+    }
+    selectSpeed = (e) => {
+        if (e.target.name === 'normal'){
+            this.setState(() => ({
+                difficulty: 500,
+                speed: 300
+            }))
+        } else {
+            this.setState(() => ({
+                difficulty: 250,
+                speed: 100
+            }))
+        }
     }
     startGame = () => {
-        this.setState(() => ({
-            difficulty: 500,
-            speed: 300
-        }))
         setTimeout(() => {
-            bgTrack.play();
-            if (this.state.sessionPlays === 0){
-                
-                this.setState((prevState) => ({
-                    sessionPlays: prevState.sessionPlays + 1
-                }))
-            }
+            this.state.difficulty === 500 ? bgTrack.play() : bgUltraTrack.play();     
             if (this.state.inProgress){
                 bgTrack.stop();
                 return this.gameOver();
@@ -81,44 +102,10 @@ class Dashboard extends React.Component {
             if (this.state.sequence.length === 0 && this.state.inProgress){
                 this.generateSequence();
                 this.beginAnimation();
-            }     
-            
-            return this.setState((prevState) => {
-                return {
-                    inProgress: !prevState.inProgress
-                }
-            })
+            }            
+            return this.toggleProgress();
         },400); 
     }; 
-    startGameHard = () => {
-        this.setState(() => ({
-            difficulty: 250,
-            speed: 100
-        }))
-        setTimeout(() => {
-            bgTrack.play();
-            if (this.state.sessionPlays === 0){
-                
-                this.setState((prevState) => ({
-                    sessionPlays: prevState.sessionPlays + 1
-                }))
-            }
-            if (this.state.inProgress){
-                bgTrack.stop();
-                return this.gameOver();
-            }
-            if (this.state.sequence.length === 0 && this.state.inProgress){
-                this.generateSequence();
-                this.beginAnimation();
-            }     
-            
-            return this.setState((prevState) => {
-                return {
-                    inProgress: !prevState.inProgress
-                }
-            })
-        },400); 
-    }
     beginAnimation = () => {
         const animationInterval = setInterval(() => {
             this.toggleColor(this.state.sequence[this.state.position], animationInterval);
@@ -155,8 +142,10 @@ class Dashboard extends React.Component {
         }
     }
     gameOver = () => {
+        loseSfx.play();
         setTimeout(() => {
             bgTrack.stop();
+            bgUltraTrack.stop();
             if (this.state.difficulty === 250){
                 this.setState((prevState) => ({
                     ultraHiScore: prevState.ultraHiScore > prevState.score ? prevState.ultraHiScore : prevState.score
@@ -191,6 +180,9 @@ class Dashboard extends React.Component {
     checkSequences = () => {
         const lengthToCheck = this.state.localSequence.length;
         for (let i = 0; i < lengthToCheck; i++){
+            if (!this.state.strict){
+                console.log('easy mode');
+            }
             if (this.state.localSequence[i] !== this.state.sequence[i]){
                 return this.gameOver();
             }
@@ -213,35 +205,27 @@ class Dashboard extends React.Component {
         }
         this.checkSequences();
         const selection = Number(e.target.name);  
-        this.pushToLocal(selection);
-        
+        this.pushToLocal(selection);    
     } 
     render () {
         return (
-            <div>
-                <ReactHowler
-                    src='./sounds/simon2.mp3'
-                    playing={this.state.sessionPlays === 0}
-                    preload={true}
-                />
+            <div>               
                 <Header />
-                
                 {!this.state.inProgress &&
                     <UserAction  
                         startGame={this.startGame} 
-                        startGameHard={this.startGameHard}
+                        startGameUltra={this.startGameUltra}
                         inProgress={this.state.inProgress}
                         hiScore={this.state.hiScore}
                         ultraHiScore={this.state.ultraHiScore}
+                        selectSpeed={this.selectSpeed}
                     />
-                }
-                      
+                }                      
                 {this.state.inProgress && 
                     <div>
                         <Scoreboard score={this.state.score} hiScore={this.state.hiScore} inProgress={this.state.inProgress}/>                    
                         <SimonApp 
-                            inProgress={this.state.inProgress}
-                            sessionPlays={this.state.sessionPlays}
+                            inProgress={this.state.inProgress}          
                             sequence={this.state.sequence}
                             handleTouch={this.handleTouch}
                             playSequence={this.playSequence}
@@ -250,8 +234,6 @@ class Dashboard extends React.Component {
                             activeBlue={this.state.activeBlue}
                             activeYellow={this.state.activeYellow}
                             activeGreen={this.state.activeGreen}
-                            simulateMove={this.simulateMove}
-                            sessionPlays={this.state.sessionPlays}
                         />
                     </div>
                 }               
