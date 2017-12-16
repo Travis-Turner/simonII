@@ -10,12 +10,11 @@ class SimonApp extends React.Component {
     }
     render () {
         return (
-            <div>
+            <div id="bgFx" className={this.props.face === '^O^' && 'bgFx-active'}>
             <Buttons 
                 inProgress={this.props.inProgress} 
                 sequence={this.props.sequence}
                 handleTouch={this.props.handleTouch}
-                playSequence={this.props.playSequence}
                 animationPlaying={this.props.animationPlaying}
                 activeRed={this.props.activeRed}
                 activeBlue={this.props.activeBlue}

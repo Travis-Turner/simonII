@@ -121,6 +121,16 @@ $button-hover-light: 15%;
     font-family: 'Audiowide', sans-serif;
     font-size: $l-size;
 }
+.counterActive {
+    color: yellow;
+    animation: happyFace;
+    animation-duration: .5s;
+    animation-direction: alternate;
+}
+@keyframes happyFace {
+    from {font-size: $l-size;}
+    to {font-size: 170px}
+}
 
 
 

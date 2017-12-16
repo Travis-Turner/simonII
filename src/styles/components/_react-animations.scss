@@ -14,5 +14,29 @@ transition: opacity 2s linear;
 .counterFx-appear.counterFx-appear-active {
     transition: scale(1) 0.5s linear;
 }
+
+#bgFx {
+    position: fixed;
+    z-index: -1;
+    top: 10;
+    background-color: #000000;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='12' viewBox='0 0 40 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 6.172L6.172 0h5.656L0 11.828V6.172zm40 5.656L28.172 0h5.656L40 6.172v5.656zM6.172 12l12-12h3.656l12 12h-5.656L20 3.828 11.828 12H6.172zm12 0L20 10.172 21.828 12h-3.656z' fill='%23f43b3b' fill-opacity='0.76' fill-rule='evenodd'/%3E%3C/svg%3E");
+    height: 100vh;
+    width: 100%; 
+    padding-top: 50px;
+}
+
+.bgFx-active {
+    animation: bgFx;
+    animation-duration: .5s;
+    animation-direction: alternate;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes bgFx {
+    from {background-color: #000000;}
+    to {background-color: rgb(110, 255, 219);}
+}
     
 

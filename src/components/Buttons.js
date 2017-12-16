@@ -12,7 +12,8 @@ class Buttons extends React.Component {
             <div id="buttonContainer">   
                
                     <div id="scoreDisplay">                     
-                            {!this.props.animationPlaying ? <span className="counter">{this.props.score}</span> : <span className="counter">{this.props.face}</span>}                                              
+                            {!this.props.animationPlaying ? <span className="counter">{this.props.score}</span> : <span className="counter">
+                                <span className={this.props.face === '^O^' && 'counterActive'}>{this.props.face}</span></span>}                                              
                     </div>       
                                   
                     <button disabled={!this.props.inProgress || this.props.animationPlaying} 
